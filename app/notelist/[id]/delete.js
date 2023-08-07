@@ -1,5 +1,4 @@
 "use client"
-import DeleteNotefetch from '@/fetchdata/deleteNotefetch';
 import { useRouter } from 'next/navigation';
 
 import React, { useEffect } from 'react'
@@ -11,7 +10,9 @@ export default function DeleteNote({note}) {
   
     const handleDelete = async (e) =>{
       e.preventDefault()
-        await DeleteNotefetch(note[0]._id);
+        await fetch(`http://localhost:3000/api/deleteNote?id=${note._id}`,{
+              method:"DELETE"})
+        navigate.refresh()
         navigate.push("/notelist")
         setOpen(false)
     }
@@ -22,8 +23,8 @@ export default function DeleteNote({note}) {
   return (
     <div style={{display:"flex",alignItems:"start" ,justifyContent:"start",width:"100%", height:"100vh",padding:3}}>
       <div style={{borderBottom:"1px solid black",height:"450px",width:"100%"}} >
-        <h4>{note[0].title}</h4>
-        <p>{note[0].body}</p>
+        <h4>{note.title}</h4>
+        <p>{note.body}</p>
       </div>
       <button onClick={()=>setOpen(true)} style={{color:"gray"}}>Delete</button>
      

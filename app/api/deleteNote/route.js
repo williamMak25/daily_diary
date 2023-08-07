@@ -5,7 +5,9 @@ import React from 'react'
 
 dbConnect()
 export async function DELETE(request) {
-  const {id} = await request.json();
+  const {searchParams}= new URL(request.url)
+  const id = searchParams.get("id")
+  console.log(id)
  
 if(!id) return NextResponse.json({"message":"id required"})
 
