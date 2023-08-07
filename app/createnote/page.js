@@ -1,16 +1,15 @@
 "use client"
 import React from 'react'
-import { Box, Button, FormLabel, Stack, TextField, Typography } from '@mui/material'
-import { AcUnit, LightMode, TextFieldsRounded } from '@mui/icons-material'
-import { DatePicker, DateTimePicker, TimeField, TimePicker } from '@mui/x-date-pickers'
+import { DatePicker} from '@mui/x-date-pickers'
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs"
 import { useState } from 'react'
 import AddNoteTodb from '@/fetchdata/addNoteTodb'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+
 
 export default function Creatnote() {
-    const navigate = useRouter()
+    const router = useRouter()
     const [removedate,setremoveDate] = useState(null);
     const [note,setNote] = useState({
       title:"",
@@ -24,32 +23,32 @@ export default function Creatnote() {
         [name]:value
       }))
     }
-    const handleSubmit =(e)=>{
+    const handleSubmit = async (e)=>{
       e.preventDefault()
-       AddNoteTodb(note,removedate);
-      navigate.push("/notelist")
+      await AddNoteTodb(note,removedate);
+      router.push("/notelist");
+
     }
 
   return ( 
-<Stack width="100%" height="100vh" spacing={2} overflow="auto" padding={2}>
-  <Typography variant='h3' textAlign="center">What is your's?</Typography>
+<div style={{display:"flex",width:"100%",height:"100vh",overflow:"auto",padding:2}}>
+  <h3 style={{textAlign:"center"}}>What is your's?</h3>
 
-  <Box sx={{width:"100%",height:"100vh",bgcolor:"white",padding:5}}>
-  <Typography variant='body1'>Create Note </Typography>
-    <Stack spacing={2}>
-      <TextField label="test-title"
+  <div style={{width:"100%",height:"100vh",bgcolor:"white",padding:5}}>
+  <h6>Create Note </h6>
+    <div style={{overflow:"auto",padding:2}}>
+      <input placeholder='test-title'
       name='title' 
       value={note.title} 
       onChange={handleChange}/>
 
-      <TextField label="test-body" 
-      multiline maxRows={6} 
-      id="outlined-textarea" 
+      <input 
+      placeholder='test-body'
       name='body' value={note.body} 
       onChange={handleChange}/>
     
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Typography variant='body1'>Remove Note time </Typography>
+      <h6 variant='body1'>Remove Note time </h6>
       
      <DatePicker
      value={removedate}
@@ -57,11 +56,11 @@ export default function Creatnote() {
      label="Date"
      />
     </LocalizationProvider>
-    <Button variant='contained' onClick={handleSubmit}>Create</Button>
-    </Stack>
+    <button variant='contained' onClick={handleSubmit}>Create</button>
+    </div>
     
-  </Box>  
+  </div>  
 
-</Stack>
+</div>
   )
 }

@@ -1,24 +1,31 @@
+"use client"
+import Link from 'next/link';
 
-import AllNoteFetch from '@/fetchdata/allNoteFetch'
-import { Box, Button, Grid, IconButton, Link, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from '@mui/material'
-import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
-import React from 'react'
-import { DateRange, Delete } from '@mui/icons-material';
-import CancelIcon from '@mui/icons-material/Cancel'
-import FactCheckTwoToneIcon from '@mui/icons-material/FactCheckTwoTone';
+import React, { useEffect, useState } from 'react'
 
+export default function ListPage() {
+  const [allnote,setAllNote] = useState([]);
+  const [loading,setLoading] = useState(true);
 
-export default async function ListPage() {
-  const data = await AllNoteFetch();
-  const allnote = data
+  useEffect(()=>{
+    fetch("http://localhost:3000/api/getNote")
+    .then( res => {return res.json()})
+    .then(data => {
+      setAllNote(data)
+      setLoading(false)
+    })
+  },[])
+  
+  if(loading) return <div>Loading...</div>
+
   return (
-   <Stack width="100%" height="100vh" spacing={2} padding="20px">
-        <Typography variant='h2' color="blue" paddingX={3}><FactCheckTwoToneIcon fontSize='large'/> Notes</Typography>
-        <Grid container spacing={2}>
+   <div style={{display:"flex",width:"100%",height:"100vh",padding:"20px"}} >
+        <h2>Notes</h2>
+        <div>
         {allnote.length !== 0 ? allnote.map(note =>{
           return(
-            <Box key={note._id} 
-            sx={{
+            <div key={note._id} 
+            style={{
             bgcolor:"yellow",
             position:"relative",
             margin:2,
@@ -27,35 +34,17 @@ export default async function ListPage() {
             borderBottomRightRadius:20
             }}>
               
-                <List disablePadding>
-
-                  <ListItem>
-                    <ListItemButton sx={{borderTopLeftRadius:40,borderTopRightRadius:40}}>
-                      <ListItemIcon>
-                        <TipsAndUpdatesIcon sx={{fontSize:40,color:"orangered"}}/>
-                      </ListItemIcon>
-                      <ListItemText primary={note.title} secondary={note.title}/>
-                    </ListItemButton>
-                  </ListItem>
-
-                  <ListItem >
-                    <ListItemIcon>
-                      <DateRange sx={{fontSize:40,color:"blue"}}/>
-                    </ListItemIcon>
-                    <ListItemText 
-                    primary={new Date(note.remove_time).toLocaleTimeString()} 
-                    secondary={new Date(note.remove_time).toLocaleDateString()}
-                    />
-                  </ListItem>
-
-                </List>
-                <Link href={`/notelist/${note._id}`} sx={{position:"absolute",top:0,right:0}} color="error">
-                  <CancelIcon sx={{fontSize:'30px'}}/>
+            <p>{note.title}</p>
+            <p>{note.body}</p>
+            <p>{new Date(note.remove_time).toLocaleTimeString()}</p>
+            <p>{new Date(note.remove_time).toLocaleDateString()}</p>
+                <Link href={`/notelist/${note._id}`}>
+                  detail
                 </Link>
-            </Box>
+            </div>
           )
         }): null}
-        </Grid>
-   </Stack>
+        </div>
+   </div>
   )
 }

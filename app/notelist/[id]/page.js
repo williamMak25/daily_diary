@@ -1,7 +1,5 @@
 
-import DeleteNotefetch from '@/fetchdata/deleteNotefetch'
 import NoteDetailFetch from '@/fetchdata/noteDetail'
-import { Box, Button, Stack, Typography } from '@mui/material'
 import { notFound, useRouter } from 'next/navigation'
 import React, { Suspense } from 'react'
 import DeleteNote from './delete'

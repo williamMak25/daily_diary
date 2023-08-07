@@ -5,10 +5,10 @@ import { NextResponse } from 'next/server'
 import React from 'react'
 
 
-export async function GET(request) {   
+export async function GET(request) { 
     dbConnect()
     const result = await Note.find()
-    if(!result) return NextResponse.json({"message":"server is not connected"});
+    if(!result) return NextResponse.json({"message":"data base is not connected"});
     
     return NextResponse.json(result)
   }

@@ -1,35 +1,38 @@
-'use client'
+"use client"
 import DeleteNotefetch from '@/fetchdata/deleteNotefetch';
-import { Box, Button, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import React from 'react'
+
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 
 export default function DeleteNote({note}) {
-    const [open,setOpen] = useState(false);
-    const navigate = useRouter();
-    const handleDelete = (e) =>{
-        DeleteNotefetch(note[0]._id);
-        navigate.push('/notelist')
+  const navigate = useRouter()
+  const [open,setOpen] = useState(false)
+  
+    const handleDelete = async (e) =>{
+      e.preventDefault()
+        await DeleteNotefetch(note[0]._id);
+        navigate.push("/notelist")
+        setOpen(false)
     }
     const handleClose = () =>{
-        navigate.push('/notelist')
+      setOpen(false)
     }
 
   return (
-    <Stack spacing={3} alignItems="start" justifyContent="start" width="100%" height="100vh" padding={3}>
-      <Stack height="450px" width="100%" spacing={2} sx={{borderBottom:"1px solid black"}} >
-        <Typography variant='h4'>{note[0].title}</Typography>
-        <Typography variant='body1'>{note[0].body}</Typography>
-      </Stack>
-      <Button color='warning' variant="outlined" onClick={()=>setOpen(true)}>Delete</Button>
+    <div style={{display:"flex",alignItems:"start" ,justifyContent:"start",width:"100%", height:"100vh",padding:3}}>
+      <div style={{borderBottom:"1px solid black",height:"450px",width:"100%"}} >
+        <h4>{note[0].title}</h4>
+        <p>{note[0].body}</p>
+      </div>
+      <button onClick={()=>setOpen(true)} style={{color:"gray"}}>Delete</button>
      
     {open ? 
-    <Box sx={{position:"absolute",top:"40%",left:"50%",padding:"20px",backgroundColor:"whitesmoke"}}>
-      <Typography variant="body2" marginBottom="10px">Do You want to Delete?</Typography>
-        <Button size='small' variant='outlined' color='error' sx={{marginRight:10}} onClick={handleClose}>Cancel</Button>
-        <Button size='small' variant='outlined' sx={{marginLeft:10}} onClick={handleDelete}>Ok</Button>
-  </Box> : null }
-</Stack>
+    <div style={{position:"absolute",top:"40%",left:"50%",padding:"20px",backgroundColor:"whitesmoke"}}>
+      <h6 style={{marginBottom:"10px"}} >Do You want to Delete?</h6>
+        <button style={{marginRight:10}} onClick={handleClose}>Cancel</button>
+        <button style={{marginLeft:10}} onClick={handleDelete}>Ok</button>
+  </div> : null }
+</div>
   )
 }
