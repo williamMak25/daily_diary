@@ -21,5 +21,5 @@ export async function POST(request) {
 
   await newNote.save()
 
-  return  NextResponse.json({"message":"success to db"})
+  return  NextResponse.json({message:"successfully created"},{status:201})
 }

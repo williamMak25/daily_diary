@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation';
 
 export default function Creatnote() {
     const router = useRouter()
-    const [removedate,setremoveDate] = useState(null);
     const [note,setNote] = useState({
       title:"",
       body:""
@@ -32,7 +31,7 @@ export default function Creatnote() {
             body:JSON.stringify({
                 "title":note.title,
                 "body":note.body,
-                "removedate":removedate
+                "removedate":new Date()
             })
         })
       router.refresh()
@@ -41,32 +40,25 @@ export default function Creatnote() {
     }
 
   return ( 
-<div style={{display:"flex",width:"100%",height:"100vh",overflow:"auto",padding:2}}>
-  <h3 style={{textAlign:"center"}}>What is your's?</h3>
+<div style={{display:"flex",flexDirection:"column",width:"100%",height:"100vh",overflow:"auto",padding:2}}>
+  <h1 style={{textAlign:"center"}}>What is your's?</h1>
 
-  <div style={{width:"100%",height:"100vh",bgcolor:"white",padding:5}}>
-  <h6>Create Note </h6>
-    <div style={{overflow:"auto",padding:2}}>
+  <div style={{width:"100%",height:"100vh",bgcolor:"white",padding:10}}>
+  <h2 style={{margin:10}}>Create Post </h2>
+    <div style={{display:"flex",flexDirection:"column",overflow:"auto",padding:10}}>
       <input placeholder='test-title'
       name='title' 
       value={note.title} 
-      onChange={handleChange}/>
+      onChange={handleChange}
+      style={{height:50,padding:5,marginBottom:10}}/>
 
-      <input 
+      <textarea 
       placeholder='test-body'
       name='body' value={note.body} 
-      onChange={handleChange}/>
+      onChange={handleChange}
+      style={{height:350,padding:5,marginBottom:10}}/>
     
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <h6 variant='body1'>Remove Note time </h6>
-      
-     <DatePicker
-     value={removedate}
-     onChange={(newvalue)=> setremoveDate(newvalue)}
-     label="Date"
-     />
-    </LocalizationProvider>
-    <button variant='contained' onClick={handleSubmit}>Create</button>
+    <button onClick={handleSubmit} style={{width:100,height:50,cursor:"pointer",color:"white",border:"none",backgroundColor:"#7676a7"}}>Create</button>
     </div>
     
   </div>  
